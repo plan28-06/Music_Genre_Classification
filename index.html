@@ -1,195 +1,191 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>Genre Classifier</title>
-        <style>
-            body {
-                font-family: sans-serif;
-                background: #111;
-                color: #eee;
-                max-width: 420px;
-                width: 100%;
-                margin: 80px auto;
-                padding: 0 20px;
-                box-sizing: border-box;
-            }
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Genre Classifier</title>
+<style>
+  body {
+    font-family: sans-serif;
+    background: #111;
+    color: #eee;
+    max-width: 420px;
+    width: 100%;
+    margin: 80px auto;
+    padding: 0 20px;
+    box-sizing: border-box;
+  }
 
-            h2 {
-                margin-bottom: 24px;
-                font-size: clamp(18px, 5vw, 22px);
-            }
+  h2 {
+    margin-bottom: 24px;
+    font-size: clamp(18px, 5vw, 22px);
+  }
 
-            input[type="file"] {
-                color: #eee;
-                max-width: 100%;
-            }
+  input[type="file"] {
+    color: #eee;
+    max-width: 100%;
+  }
 
-            button {
-                width: 100%;
-            }
+  button {
+    width: 100%;
+  }
 
-            @media (max-width: 480px) {
-                body {
-                    margin: 40px auto;
-                    padding: 0 16px;
-                }
-            }
+  @media (max-width: 480px) {
+    body {
+      margin: 40px auto;
+      padding: 0 16px;
+    }
+  }
 
-            button {
-                display: block;
-                margin-top: 16px;
-                padding: 10px 16px;
-                background: #5eead4;
-                color: #111;
-                border: none;
-                border-radius: 6px;
-                font-weight: bold;
-                cursor: pointer;
-            }
+  button {
+    display: block;
+    margin-top: 16px;
+    padding: 10px 16px;
+    background: #5eead4;
+    color: #111;
+    border: none;
+    border-radius: 6px;
+    font-weight: bold;
+    cursor: pointer;
+  }
 
-            button:disabled {
-                opacity: 0.4;
-                cursor: default;
-            }
+  button:disabled {
+    opacity: 0.4;
+    cursor: default;
+  }
 
-            #status {
-                margin-top: 14px;
-                color: #999;
-                font-size: 14px;
-            }
+  #status {
+    margin-top: 14px;
+    color: #999;
+    font-size: 14px;
+  }
 
-            #result {
-                margin-top: 24px;
-                display: none;
-            }
+  #result {
+    margin-top: 24px;
+    display: none;
+  }
 
-            #genre {
-                font-size: 24px;
-                font-weight: bold;
-                color: #5eead4;
-                text-transform: capitalize;
-                margin-bottom: 16px;
-            }
+  #genre {
+    font-size: 24px;
+    font-weight: bold;
+    color: #5eead4;
+    text-transform: capitalize;
+    margin-bottom: 16px;
+  }
 
-            .bar-row {
-                display: flex;
-                align-items: center;
-                gap: 8px;
-                margin-bottom: 6px;
-                font-size: 13px;
-            }
+  .bar-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 6px;
+    font-size: 13px;
+  }
 
-            .bar-name {
-                width: 60px;
-                flex-shrink: 0;
-                text-transform: capitalize;
-                color: #aaa;
-                font-size: 12px;
-            }
+  .bar-name {
+    width: 60px;
+    flex-shrink: 0;
+    text-transform: capitalize;
+    color: #aaa;
+    font-size: 12px;
+  }
 
-            .bar-track {
-                flex: 1;
-                height: 8px;
-                background: #222;
-                border-radius: 4px;
-                overflow: hidden;
-            }
+  .bar-track {
+    flex: 1;
+    height: 8px;
+    background: #222;
+    border-radius: 4px;
+    overflow: hidden;
+  }
 
-            .bar-fill {
-                height: 100%;
-                background: #5eead4;
-            }
+  .bar-fill {
+    height: 100%;
+    background: #5eead4;
+  }
 
-            .bar-pct {
-                width: 36px;
-                text-align: right;
-                color: #aaa;
-            }
-        </style>
-    </head>
-    <body>
-        <h2>Music Genre Classifier</h2>
+  .bar-pct {
+    width: 36px;
+    text-align: right;
+    color: #aaa;
+  }
+</style>
+</head>
+<body>
 
-        <input type="file" id="fileInput" accept=".mp4,.wav,.mp3,.m4a" />
-        <button id="analyzeBtn">Analyze</button>
+<h2>Music Genre Classifier</h2>
 
-        <div id="status"></div>
+<input type="file" id="fileInput" accept=".mp4,.wav,.mp3,.m4a" />
+<button id="analyzeBtn">Analyze</button>
 
-        <div id="result">
-            <div id="genre">—</div>
-            <div id="bars"></div>
-        </div>
+<div id="status"></div>
 
-        <script>
-            const API_URL = "https://music-genre-classification-7c2u.onrender.com/predict";
+<div id="result">
+  <div id="genre">—</div>
+  <div id="bars"></div>
+</div>
 
-            const fileInput = document.getElementById("fileInput");
-            const analyzeBtn = document.getElementById("analyzeBtn");
-            const statusEl = document.getElementById("status");
-            const resultEl = document.getElementById("result");
-            const genreEl = document.getElementById("genre");
-            const barsEl = document.getElementById("bars");
+<script>
+  const API_URL = "https://music-genre-classification-7c2u.onrender.com/predict";
 
-            analyzeBtn.addEventListener("click", async () => {
-                if (!fileInput.files[0]) {
-                    statusEl.textContent = "Please choose a file first.";
-                    return;
-                }
+  const fileInput = document.getElementById("fileInput");
+  const analyzeBtn = document.getElementById("analyzeBtn");
+  const statusEl = document.getElementById("status");
+  const resultEl = document.getElementById("result");
+  const genreEl = document.getElementById("genre");
+  const barsEl = document.getElementById("bars");
 
-                resultEl.style.display = "none";
-                statusEl.textContent = "Analyzing...";
-                analyzeBtn.disabled = true;
+  analyzeBtn.addEventListener("click", async () => {
+    if (!fileInput.files[0]) {
+      statusEl.textContent = "Please choose a file first.";
+      return;
+    }
 
-                const formData = new FormData();
-                formData.append("file", fileInput.files[0]);
+    resultEl.style.display = "none";
+    statusEl.textContent = "Analyzing... (first request can take up to a minute if the server was asleep)";
+    analyzeBtn.disabled = true;
 
-                try {
-                    const res = await fetch(API_URL, {
-                        method: "POST",
-                        body: formData,
-                    });
-                    const data = await res.json();
+    const formData = new FormData();
+    formData.append("file", fileInput.files[0]);
 
-                    if (!res.ok) {
-                        statusEl.textContent =
-                            "Error: " + (data.detail || res.status);
-                        return;
-                    }
+    try {
+      const res = await fetch(API_URL, { method: "POST", body: formData });
+      const data = await res.json();
 
-                    statusEl.textContent = "";
-                    showResult(data);
-                } catch (err) {
-                    statusEl.textContent = "Error: " + err.message;
-                } finally {
-                    analyzeBtn.disabled = false;
-                }
-            });
+      if (!res.ok) {
+        statusEl.textContent = "Error: " + (data.detail || res.status);
+        return;
+      }
 
-            function showResult(data) {
-                genreEl.textContent = data.predicted_genre;
-                barsEl.innerHTML = "";
+      statusEl.textContent = "";
+      showResult(data);
+    } catch (err) {
+      statusEl.textContent = "Error: " + err.message;
+    } finally {
+      analyzeBtn.disabled = false;
+    }
+  });
 
-                if (data.confidence) {
-                    const sorted = Object.entries(data.confidence).sort(
-                        (a, b) => b[1] - a[1],
-                    );
-                    sorted.forEach(([genre, prob]) => {
-                        const pct = Math.round(prob * 100);
-                        const row = document.createElement("div");
-                        row.className = "bar-row";
-                        row.innerHTML = `
+  function showResult(data) {
+    genreEl.textContent = data.predicted_genre;
+    barsEl.innerHTML = "";
+
+    if (data.confidence) {
+      const sorted = Object.entries(data.confidence).sort((a, b) => b[1] - a[1]);
+      sorted.forEach(([genre, prob]) => {
+        const pct = Math.round(prob * 100);
+        const row = document.createElement("div");
+        row.className = "bar-row";
+        row.innerHTML = `
           <div class="bar-name">${genre}</div>
           <div class="bar-track"><div class="bar-fill" style="width:${pct}%"></div></div>
           <div class="bar-pct">${pct}%</div>
         `;
-                        barsEl.appendChild(row);
-                    });
-                }
+        barsEl.appendChild(row);
+      });
+    }
 
-                resultEl.style.display = "block";
-            }
-        </script>
-    </body>
+    resultEl.style.display = "block";
+  }
+</script>
+
+</body>
 </html>
