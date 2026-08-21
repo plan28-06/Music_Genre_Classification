@@ -7,6 +7,9 @@ import os
 from features import featurize_for_model
 from audio_convert import convert_to_wav
 
+from fastapi.middleware.cors import CORSMiddleware
+
+
 app = FastAPI(title="Music Genre Classifier API")
 
 # Loaded once at startup, not per-request to save time and compute
@@ -14,6 +17,14 @@ model = None
 scaler = None
 label_encoder = None
 feature_columns = None
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
 
 
 @app.on_event("startup")
@@ -26,9 +37,6 @@ def load_artifacts():
     print("Artifacts loaded successfully.")
 
 
-@app.get("/")
-def health_check():
-    return {"status": "ok", "message": "Music Genre Classifier API is running"}
 
 
 @app.post("/predict")
