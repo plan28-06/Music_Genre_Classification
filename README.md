@@ -1,9 +1,7 @@
 # Music_Genre_Classification
 
-This project implements a music genre classification system using handcrafted audio features extracted from raw `.wav` files.  
+This project implements a music genre classification system using handcrafted audio features (MFCCs, chroma, spectral, and rhythm descriptors) extracted from raw .wav files with librosa.
 
-Features such as MFCCs, chroma, spectral, and rhythm descriptors are used to represent musical characteristics.  
+Random Forest and XGBoost classifiers were trained and evaluated for multi-class genre prediction, with XGBoost achieving a marginal (~0.5%) accuracy improvement over Random Forest. 
 
-Random Forest and XGBoost classifiers are trained and evaluated for multi-class genre prediction.  
-
-XGBoost achieved a marginal (~0.5%) accuracy improvement over Random Forest, indicating that both models perform at a comparable level on the extracted features.
+The trained model is deployed as a FastAPI backend (with PyAV handling mp4/mp3/m4a → wav conversion) paired with a static frontend, hosted on Render and GitHub Pages respectively — try it live [here](https://plan28-06.github.io/Music_Genre_Classification/).
