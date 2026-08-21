@@ -5,7 +5,7 @@ import pandas as pd
 
 def extract_features(file_path):
     """
-    Extracts the exact same audio features used during training:
+    Extracts the exact same handcrafted audio features used during training:
     MFCCs, chroma, spectral contrast, tonnetz, spectral centroid/rolloff/bandwidth,
     zero crossing rate, mel spectrogram stats, tempo, RMS energy, and spectral flatness.
 
@@ -71,7 +71,7 @@ def extract_features(file_path):
 
     # Rhythm Features
     tempo, beats = librosa.beat.beat_track(y=y, sr=sr)
-    features['tempo'] = tempo
+    features['tempo'] = float(np.asarray(tempo).item())
 
     # RMS Energy
     rms = librosa.feature.rms(y=y)[0]
