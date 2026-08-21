@@ -36,7 +36,9 @@ def load_artifacts():
     feature_columns = joblib.load("artifacts/feature_columns.pkl")
     print("Artifacts loaded successfully.")
 
-
+@app.get("/")
+def health_check():
+    return {"status": "ok", "message": "Music Genre Classifier API is running"}
 
 
 @app.post("/predict")
