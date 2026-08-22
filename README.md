@@ -1,6 +1,9 @@
 # Music_Genre_Classification
 
+
 This project implements a music genre classification system using handcrafted audio features (MFCCs, chroma, spectral, and rhythm descriptors) extracted from raw .wav files with librosa.
+
+(Based on GTZAN Genre Collection Dataset)
 
 Random Forest and XGBoost classifiers were trained and evaluated for multi-class genre prediction, with XGBoost achieving a marginal (~0.5%) accuracy improvement over Random Forest. 
 
